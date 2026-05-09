@@ -416,6 +416,72 @@ select {
   font-weight: 700;
 }
 
+.custom-tag-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.custom-tag-form input {
+  flex: 1;
+  min-width: 120px;
+}
+
+.custom-tag-list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.custom-tag-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: rgba(17, 124, 122, 0.15);
+  border: 1px solid rgba(17, 124, 122, 0.3);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.custom-tag-remove {
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--accent);
+}
+
+.list-item.highlight-pulse {
+  animation: highlightPulse 0.8s ease-in-out 3;
+}
+
+@keyframes highlightPulse {
+  0%, 100% {
+    background: rgba(255, 255, 255, 0.75);
+    box-shadow: none;
+  }
+  50% {
+    background: rgba(255, 107, 53, 0.15);
+    box-shadow: 0 0 12px rgba(255, 107, 53, 0.4);
+  }
+}
+
+.recommend-card.dragging {
+  opacity: 0.5;
+  transform: scale(0.95);
+}
+
+.recommend-card.drag-over {
+  border-color: var(--accent);
+  background: rgba(255, 107, 53, 0.08);
+}
+
+.recommend-card {
+  cursor: move;
+}
+
 .bg-orb {
   position: fixed;
   border-radius: 50%;

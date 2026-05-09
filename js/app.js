@@ -15,6 +15,22 @@ const SUBJECT_TAG_COLORS = {
   기타: "#6b7f8f"
 };
 
+const CUSTOM_TAGS_STORAGE = "ai-study-custom-tags";
+
+const getCustomTags = () => JSON.parse(localStorage.getItem(CUSTOM_TAGS_STORAGE) || "[]");
+const saveCustomTags = (tags) => localStorage.setItem(CUSTOM_TAGS_STORAGE, JSON.stringify(tags));
+
+const generateColorForTag = (tagName) => {
+  let hash = 0;
+  for (let i = 0; i < tagName.length; i += 1) {
+    hash = tagName.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const hue = hash % 360;
+  return `hsl(${hue}, 65%, 55%)`;
+};
+
+const getTagColor = (tag) => SUBJECT_TAG_COLORS[tag] || generateColorForTag(tag);
+
 function setTodayCard() {
   const dateNode = qs("#todayDate");
   const quoteNode = qs("#dailyQuote");
@@ -193,9 +209,13 @@ function initPlanner() {
       return;
     }
 
+    const selectedDate = filterDate.value;
     filteredItems.forEach((item) => {
       const li = document.createElement("li");
       li.className = "list-item";
+      if (selectedDate && item.studyDate === selectedDate) {
+        li.classList.add("highlight-pulse");
+      }
 
       const infoWrap = document.createElement("div");
       const subjectRow = document.createElement("p");
@@ -281,6 +301,83 @@ function initPlanner() {
     viewDate.setMonth(viewDate.getMonth() + 1);
     render();
   });
+
+  const customTagInput = qs("#customTagInput");
+  const addCustomTagBtn = qs("#addCustomTag");
+  const customTagList = qs("#customTagList");
+  const tagSelectNode = qs("#subjectTag");
+  const filterTagSelectNode = qs("#filterTag");
+
+  if (customTagInput && addCustomTagBtn && customTagList) {
+    const renderCustomTags = () => {
+      customTagList.innerHTML = "";
+      const tags = getCustomTags();
+      tags.forEach((tag) => {
+        const tagItem = document.createElement("span");
+        tagItem.className = "custom-tag-item";
+        tagItem.style.backgroundColor = generateColorForTag(tag) + "26";
+        tagItem.style.borderColor = generateColorForTag(tag);
+        tagItem.innerHTML = `
+          ${tag}
+          <span class="custom-tag-remove" data-remove-tag="${tag}">×</span>
+        `;
+        customTagList.appendChild(tagItem);
+      });
+    };
+
+    const syncTagSelects = () => {
+      const tags = getCustomTags();
+      const allTags = ["전체", "수학", "영어", "코딩", "과학", "기타", ...tags];
+      
+      const currentValue = tagSelectNode.value;
+      tagSelectNode.innerHTML = allTags
+        .filter((t, i, arr) => arr.indexOf(t) === i)
+        .map((tag) => `<option value="${tag}">${tag}</option>`)
+        .join("");
+      tagSelectNode.value = currentValue;
+
+      const currentFilterValue = filterTagSelectNode.value;
+      filterTagSelectNode.innerHTML = allTags
+        .filter((t, i, arr) => arr.indexOf(t) === i)
+        .map((tag) => `<option value="${tag}">${tag}</option>`)
+        .join("");
+      filterTagSelectNode.value = currentFilterValue;
+    };
+
+    addCustomTagBtn.addEventListener("click", () => {
+      const newTag = customTagInput.value.trim();
+      if (!newTag || newTag.length === 0) return;
+
+      const tags = getCustomTags();
+      if (!tags.includes(newTag)) {
+        tags.push(newTag);
+        saveCustomTags(tags);
+        syncTagSelects();
+        renderCustomTags();
+      }
+      customTagInput.value = "";
+    });
+
+    customTagInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        addCustomTagBtn.click();
+      }
+    });
+
+    customTagList.addEventListener("click", (e) => {
+      const removeBtn = e.target.closest(".custom-tag-remove");
+      if (!removeBtn) return;
+
+      const tagToRemove = removeBtn.dataset.removeTag;
+      const tags = getCustomTags().filter((t) => t !== tagToRemove);
+      saveCustomTags(tags);
+      syncTagSelects();
+      renderCustomTags();
+    });
+
+    renderCustomTags();
+    syncTagSelects();
+  }
 
   render();
 }
@@ -404,6 +501,8 @@ function initRecommendations() {
     };
   };
 
+  let draggedCardIndex = null;
+
   const renderRecommendationCards = (recommendation) => {
     output.innerHTML = "";
 
@@ -414,9 +513,11 @@ function initRecommendations() {
     const table = document.createElement("div");
     table.className = "recommend-timetable";
 
-    recommendation.slots.forEach((slot) => {
+    recommendation.slots.forEach((slot, index) => {
       const card = document.createElement("article");
       card.className = "recommend-card";
+      card.draggable = true;
+      card.dataset.index = index;
 
       const time = document.createElement("p");
       time.className = "recommend-time";
@@ -433,6 +534,42 @@ function initRecommendations() {
       card.appendChild(time);
       card.appendChild(slotTitle);
       card.appendChild(focus);
+
+      card.addEventListener("dragstart", (e) => {
+        draggedCardIndex = index;
+        card.classList.add("dragging");
+      });
+
+      card.addEventListener("dragend", () => {
+        card.classList.remove("dragging");
+        document.querySelectorAll(".recommend-card").forEach((c) => {
+          c.classList.remove("drag-over");
+        });
+      });
+
+      card.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        card.classList.add("drag-over");
+      });
+
+      card.addEventListener("dragleave", () => {
+        card.classList.remove("drag-over");
+      });
+
+      card.addEventListener("drop", (e) => {
+        e.preventDefault();
+        const targetIndex = Number(card.dataset.index);
+        if (draggedCardIndex !== null && draggedCardIndex !== targetIndex) {
+          const newSlots = [...recommendation.slots];
+          const draggedSlot = newSlots[draggedCardIndex];
+          newSlots.splice(draggedCardIndex, 1);
+          newSlots.splice(targetIndex, 0, draggedSlot);
+          recommendation.slots = newSlots;
+          recommendation = { ...recommendation, slots: newSlots };
+          renderRecommendationCards(recommendation);
+        }
+      });
+
       table.appendChild(card);
     });
 
