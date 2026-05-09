@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI 학습 플래너</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body data-page="home">
+    <div class="bg-orb orb-a"></div>
+    <div class="bg-orb orb-b"></div>
+
+    <header class="site-header container">
+      <a class="logo" href="index.html">AI 학습 플래너</a>
+      <nav class="nav">
+        <a class="active" href="index.html">홈</a>
+        <a href="pages/planner.html">플래너</a>
+        <a href="pages/goals.html">목표</a>
+        <a href="pages/recommendations.html">추천</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <section class="hero reveal">
+        <p class="eyebrow">오늘의 집중 루틴</p>
+        <h1>AI와 함께, 공부를
+          <span class="gradient-text">작심삼일</span>에서
+          <span class="gradient-text">지속 습관</span>으로</h1>
+        <p class="hero-copy">
+          할 일 계획부터 목표 추적, 맞춤 학습 추천까지 한 번에 관리하세요.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="pages/planner.html">지금 계획 세우기</a>
+          <a class="btn btn-ghost" href="pages/recommendations.html">AI 추천 받기</a>
+        </div>
+      </section>
+
+      <section class="grid-3 stagger">
+        <article class="card feature">
+          <h2>스마트 일정 관리</h2>
+          <p>과목, 예상 시간, 우선순위를 기준으로 하루 공부를 빠르게 구성합니다.</p>
+        </article>
+        <article class="card feature">
+          <h2>목표 달성 시각화</h2>
+          <p>주간/월간 목표 진행률을 숫자와 그래프로 확인해 꾸준함을 만듭니다.</p>
+        </article>
+        <article class="card feature">
+          <h2>AI 학습 추천</h2>
+          <p>학습 수준과 가능 시간을 바탕으로 오늘의 학습 시나리오를 제안합니다.</p>
+        </article>
+      </section>
+
+      <section class="today card reveal">
+        <h2>오늘의 학습 체크</h2>
+        <div class="today-row">
+          <div>
+            <p class="label">오늘 날짜</p>
+            <p id="todayDate" class="value">-</p>
+          </div>
+          <div>
+            <p class="label">오늘의 한 줄 다짐</p>
+            <p id="dailyQuote" class="value">-</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="js/app.js"></script>
+  </body>
+</html>
