@@ -244,6 +244,102 @@ select {
   background: rgba(255, 255, 255, 0.75);
 }
 
+.list-item-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+}
+
+.tag-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+
+.planner-filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.planner-calendar-card {
+  grid-column: 1 / -1;
+}
+
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.calendar-month {
+  margin: 0;
+  min-width: 110px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.calendar-weekdays {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  color: var(--ink-soft);
+  font-weight: 700;
+  text-align: center;
+}
+
+.calendar-grid {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.calendar-cell {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.75);
+  min-height: 74px;
+  padding: 7px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.calendar-empty {
+  background: transparent;
+  border-style: dashed;
+  cursor: default;
+}
+
+.calendar-day {
+  font-weight: 700;
+}
+
+.calendar-note {
+  font-size: 0.78rem;
+  color: var(--accent-2);
+}
+
+.calendar-has-plan {
+  border-color: rgba(17, 124, 122, 0.45);
+  background: rgba(17, 124, 122, 0.08);
+}
+
+.calendar-selected {
+  outline: 2px solid rgba(255, 107, 53, 0.75);
+}
+
 .item-meta {
   color: var(--ink-soft);
   font-size: 0.9rem;
@@ -281,6 +377,43 @@ select {
   background: rgba(255, 255, 255, 0.75);
   padding: 14px;
   line-height: 1.7;
+}
+
+.recommend-title {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.recommend-timetable {
+  display: grid;
+  gap: 10px;
+}
+
+.recommend-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.recommend-time {
+  margin: 0;
+  color: var(--accent-2);
+  font-weight: 700;
+}
+
+.recommend-slot-title {
+  margin: 4px 0;
+}
+
+.recommend-focus {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+.recommend-tip {
+  margin-top: 12px;
+  font-weight: 700;
 }
 
 .bg-orb {
@@ -366,5 +499,13 @@ select {
 
   .hero {
     padding: 24px;
+  }
+
+  .planner-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-cell {
+    min-height: 64px;
   }
 }

@@ -29,6 +29,16 @@
             <input type="text" id="subject" placeholder="예: 수학" required />
           </label>
           <label>
+            과목 태그
+            <select id="subjectTag">
+              <option value="수학" selected>수학</option>
+              <option value="영어">영어</option>
+              <option value="코딩">코딩</option>
+              <option value="과학">과학</option>
+              <option value="기타">기타</option>
+            </select>
+          </label>
+          <label>
             날짜
             <input type="date" id="studyDate" required />
           </label>
@@ -53,7 +63,48 @@
           <h2>내 학습 리스트</h2>
           <button id="clearPlanner" class="btn btn-ghost" type="button">전체 삭제</button>
         </div>
+        <div class="planner-filters">
+          <label>
+            우선순위 필터
+            <select id="filterPriority">
+              <option value="전체" selected>전체</option>
+              <option value="높음">높음</option>
+              <option value="중간">중간</option>
+              <option value="낮음">낮음</option>
+            </select>
+          </label>
+          <label>
+            태그 필터
+            <select id="filterTag">
+              <option value="전체" selected>전체</option>
+              <option value="수학">수학</option>
+              <option value="영어">영어</option>
+              <option value="코딩">코딩</option>
+              <option value="과학">과학</option>
+              <option value="기타">기타</option>
+            </select>
+          </label>
+          <label>
+            날짜 필터
+            <input type="date" id="filterDate" />
+          </label>
+        </div>
         <ul id="plannerList" class="list"></ul>
+      </section>
+
+      <section class="card reveal planner-calendar-card">
+        <div class="section-row">
+          <h2>달력 뷰</h2>
+          <div class="calendar-nav">
+            <button id="prevMonth" class="btn btn-ghost" type="button">이전</button>
+            <p id="calendarMonth" class="calendar-month"></p>
+            <button id="nextMonth" class="btn btn-ghost" type="button">다음</button>
+          </div>
+        </div>
+        <div class="calendar-weekdays">
+          <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+        </div>
+        <div id="calendarGrid" class="calendar-grid"></div>
       </section>
     </main>
 
